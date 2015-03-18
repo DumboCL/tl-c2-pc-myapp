@@ -63,7 +63,19 @@ class UsersController < ApplicationController
 
   def add_group
     @user = User.find(params[:format])
-    
+    @groups = Group.all
+  end
+
+  def save_group_under_user
+    @group_user = GroupsUser.new
+    @user = User.find(params[:format])
+    @group_user.user_id = params[:format]
+    @group_user.group_id = params[:user][:groups]
+    if @group_user.save
+      redirect_to user_path(@user), notice: 'Group was successfully added.'
+    else
+      render :new
+    end
   end
 
   private
